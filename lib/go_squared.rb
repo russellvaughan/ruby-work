@@ -21,7 +21,6 @@ class GoSquared
 		end
 
 		def fetch
-			build_url
 			uri = URI(@url)
 			response = Net::HTTP.get(uri)
 			@data = JSON.parse(response)
@@ -33,7 +32,7 @@ class GoSquared
 				@array << "#{key}=#{value}" if value
 			end
 			filter=@array.join('&')
-			@url.concat(filter)
+			@url = @url.concat(filter)
 		end
 
 		def build_url
