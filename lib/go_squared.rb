@@ -17,28 +17,15 @@ class GoSquared
 		METRICS.each do |metric|
 			define_method metric do
 				@metric = metric + "?"
+				self
 			end
 		end
 
-		def fetch
-			uri = URI(@url)
-			response = Net::HTTP.get(uri)
-			@data = JSON.parse(response)
-		end
-
-		def build_params
-			@array = ['&']
-			@params.each do |key, value|
-				@array << "#{key}=#{value}" if value
-			end
-			filter=@array.join('&')
-			@url = @url.concat(filter)
-		end
-
-		def build_url
-			@url = BASEURL + @metric + "api_key=#{@api_key}" + "&site_token=#{@site_token}"
-			self
-		end
+		def request
+			build_url
+			build_params
+			fetch
+		end	
 
 		def from(date)
 			@from = @params[:from]=date
@@ -70,6 +57,25 @@ class GoSquared
 			self
 		end
 
+	private
+
+	def fetch
+		uri = URI(@url)
+		response = Net::HTTP.get(uri)
+		@data = JSON.parse(response)
 	end
 
-"https://api.gosquared.com/trends/v2/aggregate?api_key=demo&site_token=GSN-181546-E&dateFormat=yyyymmdd&from=20160614&to=20160615" 
+	def build_params
+		@array = ['']
+		@params.each do |key, value|
+			@array << "#{key}=#{value}" if value
+		end
+		filter=@array.join('&')
+		@url = @url.concat(filter)
+	end
+
+	def build_url
+		@url = BASEURL + @metric + "api_key=#{@api_key}" + "&site_token=#{@site_token}"
+	end
+
+end
