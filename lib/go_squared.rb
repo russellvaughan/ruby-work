@@ -10,8 +10,7 @@ class GoSquared
 		@site_token = site_token
 		@api_key = api_key
 		@metric = "aggregate?"
-		@params = {dateFormat: @dateFormat, from: @from, to: @to, 
-			format: @format, limit: @limit, sort: @sort, group: @group}
+	
 		end
 
 		METRICS.each do |metric|
